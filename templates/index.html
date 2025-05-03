@@ -46,6 +46,15 @@
                                 <h5>提交详情：</h5>
                                 <div class="list-group" id="commitList"></div>
                             </div>
+                            
+                            <!-- 添加导出功能区域 -->
+                            <div id="exportContainer" class="mt-3 d-none">
+                                <h5>导出数据：</h5>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="exportPath" placeholder="自定义导出路径（可选）">
+                                    <button class="btn btn-success" type="button" id="exportJson">导出为JSON</button>
+                                </div>
+                            </div>
                         </div>
                         
                         <div id="error" class="alert alert-danger mt-4 d-none"></div>
@@ -59,29 +68,6 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     
     <!-- 在表单下方添加 -->
-    <div class="mt-4">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="debugMode">
-            <label class="form-check-label" for="debugMode">
-                调试模式（直接解析HTML）
-            </label>
-        </div>
-        
-        <div id="htmlInputContainer" class="mt-3 d-none">
-            <form id="testHtmlForm">
-                <div class="mb-3">
-                    <label for="htmlContent" class="form-label">GitHub贡献页面HTML</label>
-                    <textarea class="form-control" id="htmlContent" rows="5" placeholder="粘贴GitHub贡献页面的HTML内容"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="testDate" class="form-label">目标日期 (YYYY-MM-DD)</label>
-                    <input type="date" class="form-control" id="testDate" required>
-                </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-secondary">解析HTML</button>
-                </div>
-            </form>
-        </div>
-    </div>
+
 </body>
 </html>

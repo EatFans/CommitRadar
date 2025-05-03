@@ -37,3 +37,18 @@ body {
 #loading {
     padding: 2rem 0;
 }
+
+/* 添加导出按钮样式 */
+#exportContainer {
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+}
+
+#exportJson {
+    transition: all 0.2s ease;
+}
+
+#exportJson:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

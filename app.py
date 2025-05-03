@@ -3,6 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import re
+import os
+import json
+from flask import send_file
 
 app = Flask(__name__)
 
@@ -276,6 +279,82 @@ def test_parse():
         'date': target_date,
         'count': count
     })
+
+
+@app.route('/api/export-json', methods=['POST'])
+def export_json():
+    """导出提交数据为JSON文件"""
+    data = request.json
+    commit_data = data.get('data')
+    custom_path = data.get('path')
+    
+    if not commit_data:
+        return jsonify({'error': '没有提供数据'}), 400
+    
+    try:
+        # 创建导出目录
+        export_dir = os.path.join(app.root_path, 'exports')
+        if not os.path.exists(export_dir):
+            os.makedirs(export_dir)
+        
+        # 生成文件名
+        username = commit_data.get('username', 'user')
+        date = commit_data.get('date', 'date')
+        default_filename = f"commits_{username}_{date}.json"
+        
+        # 处理自定义路径
+        if custom_path:
+            # 确保路径安全，防止目录遍历攻击
+            custom_path = os.path.normpath(custom_path)
+            if custom_path.startswith('/') or '..' in custom_path:
+                return jsonify({'error': '无效的文件路径'}), 400
+                
+            # 如果只提供了目录，添加默认文件名
+            if not custom_path.endswith('.json'):
+                if not os.path.splitext(custom_path)[1]:
+                    if not custom_path.endswith('/'):
+                        custom_path += '/'
+                    custom_path += default_filename
+                else:
+                    # 确保扩展名为.json
+                    custom_path = os.path.splitext(custom_path)[0] + '.json'
+            
+            # 创建自定义目录（如果需要）
+            custom_dir = os.path.dirname(custom_path)
+            if custom_dir:
+                full_dir_path = os.path.join(export_dir, custom_dir)
+                if not os.path.exists(full_dir_path):
+                    os.makedirs(full_dir_path)
+            
+            filepath = os.path.join(export_dir, custom_path)
+            filename = os.path.basename(custom_path)
+        else:
+            filepath = os.path.join(export_dir, default_filename)
+            filename = default_filename
+        
+        # 写入JSON文件
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(commit_data, f, ensure_ascii=False, indent=2)
+        
+        # 生成下载URL
+        download_url = f"/exports/{os.path.relpath(filepath, export_dir)}"
+        
+        return jsonify({
+            'success': True,
+            'filepath': filepath,
+            'filename': filename,
+            'download_url': download_url
+        })
+    
+    except Exception as e:
+        logger.error(f"导出JSON时出错: {e}")
+        return jsonify({'error': f'导出失败: {str(e)}'}), 500
+
+# 添加静态文件路由
+@app.route('/exports/<path:filename>')
+def download_file(filename):
+    """下载导出的文件"""
+    return send_file(os.path.join(app.root_path, 'exports', filename), as_attachment=True)
 
 
 if __name__ == '__main__':
