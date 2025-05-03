@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommitRadar - GitHub提交跟踪工具</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CommitRadar</h1>
+            <p class="subtitle">GitHub提交跟踪与分析工具</p>
+            <nav>
+                <ul>
+                    <li><a href="/" class="active">单日查询</a></li>
+                    <li><a href="/batch">批量查询</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="search-section">
+                <h2>查询GitHub用户提交记录</h2>
+                <div class="search-form">
+                    <div class="form-group">
+                        <label for="username">GitHub用户名:</label>
+                        <input type="text" id="username" placeholder="输入GitHub用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">日期:</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <button id="search-btn" class="btn primary">查询</button>
+                </div>
+            </section>
+            
+            <section class="results-section" id="results-container" style="display: none;">
+                <h2>查询结果</h2>
+                <div class="result-summary">
+                    <p>用户 <span id="result-username" class="highlight"></span> 在 <span id="result-date" class="highlight"></span> 的提交记录:</p>
+                    <p class="commit-count">提交次数: <span id="commit-count" class="highlight">0</span></p>
+                </div>
+                
+                <div class="commits-list">
+                    <h3>提交详情</h3>
+                    <div id="commits-container">
+                        <!-- 提交详情将在这里动态生成 -->
+                    </div>
+                </div>
+            </section>
+            
+            <section class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>正在获取数据，请稍候...</p>
+            </section>
+            
+            <section class="error-message" id="error-container" style="display: none;">
+                <p id="error-message"></p>
+            </section>
+        </main>
+        
+        <footer>
+            <p>CommitRadar &copy; 2023 | <a href="https://github.com/yourusername/commitradar" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
+    
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
