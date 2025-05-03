@@ -1,0 +1,39 @@
+body {
+    background-color: #f8f9fa;
+    padding-bottom: 2rem;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #4a6bff 0%, #2541b2 100%);
+}
+
+.commit-item {
+    transition: all 0.2s ease;
+}
+
+.commit-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.commit-repo {
+    font-weight: bold;
+    color: #0366d6;
+}
+
+.commit-title {
+    color: #24292e;
+}
+
+.commit-time {
+    color: #586069;
+    font-size: 0.85rem;
+}
+
+#loading {
+    padding: 2rem 0;
+}
